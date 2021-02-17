@@ -1,11 +1,12 @@
 package main
 
 import (
-	"log"
 	"math/rand"
+	"net/http"
+	"strconv"
 	"time"
 
-	"github.com/google/uuid"
+	"github.com/gin-gonic/gin"
 )
 
 var breeds = []string{"Afghan Hound", "Beagle", "Bernese Mountain Dog", "Bloodhound", "Dalmatian", "Jack Russell Terrier", "Norwegian Elkhound"}
@@ -21,9 +22,9 @@ type Pet struct {
 func getRandomPet() Pet {
 	pet := Pet{}
 
-	pet.ID = getUUID()
-	pet.Breed = randomBreed()
-	pet.Name = randomName()
+	pet.ID = generateID("pet")
+	pet.Breed = randomElement(breeds)
+	pet.Name = randomElement(names)
 
 	pet.DateOfBirth = randomDate()
 
@@ -39,23 +40,43 @@ func randomDate() time.Time {
 	return time.Unix(sec, 0)
 }
 
-func randomBreed() string {
-	return breeds[random(0, len(breeds))]
-}
-
-func randomName() string {
-	return names[random(0, len(names))]
-}
-
-func random(min int, max int) int {
-	return rand.Intn(max-min) + min
-}
-
-func getUUID() string {
-	uuid, err := uuid.NewRandom()
-	if err != nil {
-		log.Fatal(err)
-		return ""
+func getPets(c *gin.Context) {
+	limit := 10
+	if c.Query("limit") != "" {
+		newLimit, err := strconv.Atoi(c.Query("limit"))
+		if err != nil {
+			limit = 10
+		} else {
+			limit = newLimit
+		}
 	}
-	return uuid.String()
+	if limit > 50 {
+		limit = 50
+	}
+	pets := make([]Pet, limit)
+
+	for i := 0; i < limit; i++ {
+		pets[i] = getRandomPet()
+	}
+
+	c.JSON(200, pets)
+}
+
+func getPet(c *gin.Context) {
+	petID := c.Param("id")
+	randomPet := getRandomPet()
+	randomPet.ID = petID
+	c.JSON(200, randomPet)
+}
+
+func createPet(c *gin.Context) {
+	newPet := Pet{}
+	err := c.BindJSON(&newPet)
+
+	if err != nil {
+		return
+	}
+
+	newPet.ID = generateID("pet")
+	c.JSON(http.StatusAccepted, newPet)
 }

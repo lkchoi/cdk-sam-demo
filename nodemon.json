@@ -1,0 +1,7 @@
+{
+  "verbose": false,
+  "watch": [
+    "app"
+  ],
+  "ext": "go"
+}

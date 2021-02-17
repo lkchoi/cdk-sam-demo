@@ -15,6 +15,9 @@
 vendor/*/
 gin/aws-lambda-go-api-proxy-gin
 core/aws-lambda-go-api-proxy-core
+cdk/main
 sample/main
 sample/main.zip
 sample/output-sam.yaml
+dist
+cdk/template.yaml
