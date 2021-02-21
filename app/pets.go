@@ -22,9 +22,9 @@ type Pet struct {
 func getRandomPet() Pet {
 	pet := Pet{}
 
-	pet.ID = generateID("pet")
-	pet.Breed = randomElement(breeds)
-	pet.Name = randomElement(names)
+	pet.ID = GenerateID("pet")
+	pet.Breed = RandomElement(breeds)
+	pet.Name = RandomElement(names)
 
 	pet.DateOfBirth = randomDate()
 
@@ -77,6 +77,6 @@ func createPet(c *gin.Context) {
 		return
 	}
 
-	newPet.ID = generateID("pet")
+	newPet.ID = GenerateID("pet")
 	c.JSON(http.StatusAccepted, newPet)
 }

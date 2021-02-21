@@ -16,8 +16,8 @@ type Client struct {
 
 func getRandomClient() Client {
 	client := Client{}
-	client.ID = generateID("client")
-	client.Name = randomElement(companies)
+	client.ID = GenerateID("client")
+	client.Name = RandomElement(companies)
 	return client
 }
 
@@ -58,6 +58,6 @@ func createClient(c *gin.Context) {
 		return
 	}
 
-	newClient.ID = generateID("client")
+	newClient.ID = GenerateID("client")
 	c.JSON(http.StatusAccepted, newClient)
 }

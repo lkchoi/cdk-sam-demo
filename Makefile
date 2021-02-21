@@ -9,14 +9,13 @@ GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 CORE_BINARY_NAME=aws-lambda-go-api-proxy-core
 GIN_BINARY_NAME=aws-lambda-go-api-proxy-gin
-SAMPLE_BINARY_NAME=main
+BINARY_NAME=main
 
-all: clean test build package
+all: clean test build
 build:
 	$(GOBUILD) ./...
-	cd app && $(GOBUILD) -o $(SAMPLE_BINARY_NAME)
-package:
-	mkdir -p dist && mv app/$(SAMPLE_BINARY_NAME) dist
+	mkdir -p dist
+	cd app && $(GOBUILD) -o ../dist/$(BINARY_NAME)
 test:
 	$(GOTEST) -v ./...
 synth:
@@ -25,5 +24,9 @@ invoke: synth
 	cd cdk && sam local invoke
 start:
 	cd cdk && sam local start-api
+diff:
+	cd cdk && cdk diff
+deploy: build docs synth
+	cd cdk && cdk deploy
 clean:
-	rm -f dist/$(SAMPLE_BINARY_NAME)
+	rm -f dist/$(BINARY_NAME)

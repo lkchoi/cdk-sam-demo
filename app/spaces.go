@@ -19,10 +19,10 @@ type Space struct {
 func getRandomSpace() Space {
 	space := Space{}
 
-	space.ID = generateID("space")
-	space.Name = randomElement(addrs)
-	space.Coordinates = randomPoints(randomInt(4, 20))
-	space.ClientID = generateID("client")
+	space.ID = GenerateID("space")
+	space.Name = RandomElement(addrs)
+	space.Coordinates = randomPoints(RandomInt(4, 20))
+	space.ClientID = GenerateID("client")
 
 	return space
 }
@@ -36,7 +36,7 @@ func randomPoints(n int) [][2]float32 {
 }
 
 func randomPoint(max float32) [2]float32 {
-	return [2]float32{randomFloat(max), randomFloat(max)}
+	return [2]float32{RandomFloat(max), RandomFloat(max)}
 }
 
 func getSpaces(c *gin.Context) {
@@ -77,6 +77,17 @@ func createSpace(c *gin.Context) {
 		return
 	}
 
-	newSpace.ID = generateID("space")
+	newSpace.ID = GenerateID("space")
 	c.JSON(http.StatusAccepted, newSpace)
+}
+
+func updateSpace(c *gin.Context) {
+	spaceID := c.Param("id")
+	newSpace := Space{}
+	err := c.BindJSON(&newSpace)
+	if err != nil {
+		return
+	}
+	newSpace.ID = spaceID
+	c.JSON(http.StatusCreated, newSpace)
 }

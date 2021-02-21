@@ -20,12 +20,9 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 		log.Printf("Gin cold start")
 		r := gin.Default()
 
-		r.GET("/api/v1/pets", getPets)
-		r.GET("/api/v1/pets/:id", getPet)
-		r.POST("/api/v1/pets", createPet)
-
 		r.GET("/api/v1/spaces", getSpaces)
 		r.GET("/api/v1/spaces/:id", getSpace)
+		r.PUT("/api/v1/spaces/:id", updateSpace)
 		r.POST("/api/v1/spaces", createSpace)
 
 		r.GET("/api/v1/clients", getClients)

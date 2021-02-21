@@ -6,18 +6,18 @@ import (
 	"github.com/segmentio/ksuid"
 )
 
-func randomInt(min int, max int) int {
+func RandomInt(min int, max int) int {
 	return rand.Intn(max-min) + min
 }
 
-func generateID(prefix string) string {
+func GenerateID(prefix string) string {
 	return prefix + "_" + ksuid.New().String()
 }
 
-func randomFloat(max float32) float32 {
+func RandomFloat(max float32) float32 {
 	return rand.Float32() * max
 }
 
-func randomElement(list []string) string {
-	return list[randomInt(0, len(list))]
+func RandomElement(list []string) string {
+	return list[RandomInt(0, len(list))]
 }
