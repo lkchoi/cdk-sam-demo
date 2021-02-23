@@ -61,3 +61,13 @@ func createClient(c *gin.Context) {
 	newClient.ID = GenerateID("client")
 	c.JSON(http.StatusAccepted, newClient)
 }
+
+func updateClient(c *gin.Context) {
+	client := Client{}
+	err := c.BindJSON(&client)
+	if err != nil {
+		return
+	}
+	client.ID = c.Param("id")
+	c.JSON(http.StatusOK, client)
+}
